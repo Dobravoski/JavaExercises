@@ -7,10 +7,9 @@ public class Main {
         var sc = new Scanner(System.in);
 
         System.out.print("Enter the number of employees: ");
-        int quantityOfEmployees = Integer.parseInt(sc.nextLine());
-        Employee[] employees = new Employee[quantityOfEmployees];
+        Employee[] employees = new Employee[Integer.parseInt(sc.nextLine())];
 
-        for (int i = 1; i < quantityOfEmployees+1; i++) {
+        for (int i = 1; i < employees.length+1; i++) {
             System.out.println("Employee " + i + " data:");
             System.out.print("Outsourced (y/n)? ");
             char outsourced = sc.nextLine().charAt(0);
