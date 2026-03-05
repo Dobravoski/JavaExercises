@@ -17,6 +17,7 @@ public class Program {
     public static void menu() {
         var sc = new Scanner(System.in);
         var taskService = new TaskService();
+        List<Task> tasks = taskService.listTasks();
 
         outer: while (true) {
             System.out.println("\n===== TASK MANAGER =====\n");
@@ -29,7 +30,7 @@ public class Program {
                     """);
             switch (intScanner(1, 5, sc)) {
                 case 1:
-                    listTasks(taskService, taskService.listTasks());
+                    listTasks(taskService, tasks);
                     break;
                 case 2:
                     System.out.println("\n===== NEW TASK =====\n");
@@ -59,17 +60,19 @@ public class Program {
                         case 5 -> Task.Priority.VERY_HIGH;
                         default -> null;
                     };
-                    taskService.addTask(new Task(title, type, dueDate, priority, Task.Status.PENDING));
+                    tasks.add(new Task(title, type, dueDate, priority, Task.Status.PENDING));
+                    taskService.sortByDate(tasks);
                     break;
                 case 3:
                     System.out.println("Task index");
-                    List<Task> tasksToComplete = taskService.listTasks();
-                    taskService.completeTask(intScanner(0, tasksToComplete.size(), sc), tasksToComplete);
+                    taskService.completeTask(tasks.get(intScanner(0, tasks.size()-1, sc)));
                     break;
                 case 4:
-                    listTasks(taskService, taskService.highPriorityTasks());
+                    listTasks(taskService, taskService.highPriorityTasks(tasks));
                     break;
                 case 5:
+                    System.out.println("Saving the file...");
+                    taskService.updateFile(tasks);
                     System.out.println("Exiting");
                     break outer;
             }
